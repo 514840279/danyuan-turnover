@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/plugins/bootstrap/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="/plugins/font-awesome/css/font-awesome.min.css"/>
-<!-- <link rel="stylesheet" href="/plugins/bootstrap/css/ionicons.min.css"/> -->
+<link rel="stylesheet" href="/plugins/bootstrap/css/ionicons.min.css"/>
 <link rel="stylesheet" href="/dist/css/AdminLTE.min.css"/>
 <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css"/>
 <link rel="stylesheet" href="/dist/css/style.css"/>
@@ -33,7 +33,7 @@
 				<div class="container">
 					<div class="collapse navbar-collapse pull-left" id="navbar-collapse">
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="/#" data-url='' data-id='turnover_index' data-name='流水账'>流水账</a></li>
+							<li class="active"><a href="/#" data-url='/pages/history/index.html' data-id='turnover_index' data-name='流水账'>流水账</a></li>
 							<li ><a href="/#" data-url='/pages/dic/index.html' data-id='dic_index' data-name='字典' >字典</a></li>
 						</ul>
 					</div>
@@ -71,7 +71,8 @@
 			pageLoad(url);
 			$("#navbar-collapse").find("ul li.active").removeClass("active");
 			$(this).addClass("active");
-		})
+		});
+		$("#navbar-collapse").find("ul li.active").click();
 	</script>
 </body>
 </html>
