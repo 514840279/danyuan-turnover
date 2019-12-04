@@ -1,5 +1,10 @@
 function pageLoad(url){
-	$("#mainDiv").load(url, function(response, status, xhr) {
+	mainDiv="mainDiv";
+	templatesLoad(mainDiv,url)
+}
+
+function templatesLoad(mainDiv,url){
+	$("#"+mainDiv).load(url, function(response, status, xhr) {
 		if (status == "success") {
 			if (response) {
 				try {
@@ -8,7 +13,7 @@ function pageLoad(url){
 					}
 					var result = jQuery.parseJSON(response);
 					if (result.code == 100) {
-						$("#mainDiv").html("");
+						$("#"+mainDiv).html("");
 						alert(result.data);
 					}
 				} catch (e) {
