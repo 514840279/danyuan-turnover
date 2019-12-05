@@ -1,5 +1,6 @@
 package org.danyuan.application.turnover.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.danyuan.application.common.base.BaseController;
@@ -27,23 +28,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/sysTurnoverInfo")
 public class SysTurnoverInfoController extends BaseControllerImpl<SysTurnoverInfo> implements BaseController<SysTurnoverInfo> {
-	
+
 	@Autowired
 	SysTurnoverInfoService sysTurnoverInfoService;
-
+	
 	@RequestMapping("/pageCost")
 	public BaseResult<Page<SysTurnoverInfo>> pageCost(@RequestBody Pagination<SysTurnoverInfo> vo) {
 		return ResultUtil.success(sysTurnoverInfoService.pageCost(vo));
 	}
-	
+
 	@RequestMapping("/pageIncome")
 	public BaseResult<Page<SysTurnoverInfo>> pageIncome(@RequestBody Pagination<SysTurnoverInfo> vo) {
 		return ResultUtil.success(sysTurnoverInfoService.pageCost(vo));
 	}
-
+	
 	@RequestMapping("/chart")
 	public BaseResult<Map<String, Object>> chart(@RequestBody SysTurnoverInfoVo vo) {
 		return ResultUtil.success(sysTurnoverInfoService.chart(vo));
 	}
 	
+	@RequestMapping("/total")
+	public BaseResult<List<Map<String, Object>>> total() {
+		return ResultUtil.success(sysTurnoverInfoService.total());
+	}
 }

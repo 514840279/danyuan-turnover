@@ -25,6 +25,7 @@ window.operateEvents = {
 					function refreshTableInfo(result){
 						if(result.code==200){
 							$("#cost-table-id").bootstrapTable('refresh');
+							loadTotal();
 						}
 					};
 				}
@@ -108,6 +109,7 @@ $(function() {
 			if(result.code==200){
 				$("#cost_modal").modal("hide");
 				$("#cost-table-id").bootstrapTable('refresh');
+				loadTotal();
 			}
 		};
 		

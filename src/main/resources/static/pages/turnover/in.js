@@ -25,6 +25,7 @@ window.operateEvents = {
 					function refreshTableInfo(result){
 						if(result.code==200){
 							$("#income-table-id").bootstrapTable('refresh');
+							loadTotal();
 						}
 					};
 				}
@@ -35,7 +36,6 @@ window.operateEvents = {
 var id=null;
 $(function() {
 	init();
-	
 
 	// Date picker
 	$('#datepicker').datepicker({
@@ -121,6 +121,7 @@ $(function() {
 			if(result.code==200){
 				$("#income_modal").modal("hide");
 				$("#income-table-id").bootstrapTable('refresh');
+				loadTotal();
 			}
 		};
 		

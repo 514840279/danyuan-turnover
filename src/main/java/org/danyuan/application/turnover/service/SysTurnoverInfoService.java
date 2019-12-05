@@ -100,7 +100,8 @@ public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> imp
 				columnStringBuilderBuilder.append(" TURN_DATE as datestr");
 				break;
 		}
-
+		
+		List<String> typelist = new ArrayList<String>();
 		if (vo.getType() != null && vo.getType().size() > 0) {
 			groupStringBuilderBuilder.append(",CATEGORY ");
 			columnStringBuilderBuilder.append(",CATEGORY ");
@@ -109,7 +110,14 @@ public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> imp
 		if ((vo.getZhichu() != null && vo.getZhichu().size() > 0) || (vo.getShouru() != null && vo.getShouru().size() > 0)) {
 			groupStringBuilderBuilder.append(",TYPE ");
 			columnStringBuilderBuilder.append(",TYPE ");
+			if (vo.getZhichu() != null && vo.getZhichu().size() > 0) {
+				typelist.addAll(vo.getZhichu());
+			}
+			if (vo.getShouru() != null && vo.getShouru().size() > 0) {
+				typelist.addAll(vo.getShouru());
+			}
 		}
+
 		Map<String, Object> params = new HashMap<>();
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(" SELECT  ");
@@ -125,18 +133,177 @@ public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> imp
 			
 			if ((vo.getZhichu() != null && vo.getZhichu().size() > 0) || (vo.getShouru() != null && vo.getShouru().size() > 0)) {
 				stringBuilder.append(" and TYPE  in (:TYPE ) ");
-				params.put("TYPE", vo.getZhichu().addAll(vo.getShouru()));
+
+				params.put("TYPE", typelist);
 			}
 		}
 		stringBuilder.append(" group by ");
 		stringBuilder.append(groupStringBuilderBuilder);
+		stringBuilder.append(" order by ");
+		stringBuilder.append(groupStringBuilderBuilder);
 
 		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(jdbcTemplate);
-		List<Map<String, Object>> list = template.queryForList(stringBuilder.toString(), params);
+		List<Map<String, Object>> resultList = template.queryForList(stringBuilder.toString(), params);
 		
 		Map<String, Object> map = new HashMap<>();
 
+		List<String> xAxis_data = new ArrayList<>();
+		groupX(resultList, xAxis_data);
+		
+		List<Map<String, Object>> series_data = new ArrayList<>();
+
+		if (((vo.getZhichu() != null && vo.getZhichu().size() > 0) || (vo.getShouru() != null && vo.getShouru().size() > 0)) && (vo.getType() != null && vo.getType().size() > 0)) {
+			// 分组
+			for (String type : vo.getType()) {
+				Map<String, Object> sdata = new HashMap<>();
+				sdata.put("type", "bar");
+				sdata.put("name", type);
+
+				List<Double> series_data_data = new ArrayList<>();
+				for (String string : xAxis_data) {
+					boolean check = true;
+					for (Map<String, Object> map2 : resultList) {
+						if (map2.get("DATESTR").toString().equals(string) && map2.get("CATEGORY").toString().equals(type)) {
+							series_data_data.add(Double.valueOf(map2.get("MONEY").toString()));
+							check = false;
+							break;
+						}
+					}
+					if (check) {
+						series_data_data.add(Double.valueOf(0));
+					}
+				}
+				sdata.put("data", series_data_data);
+				series_data.add(sdata);
+			}
+
+			// 分组
+			for (String type : typelist) {
+				Map<String, Object> sdata = new HashMap<>();
+				sdata.put("type", "bar");
+				sdata.put("name", type);
+
+				List<Double> series_data_data = new ArrayList<>();
+				for (String string : xAxis_data) {
+					boolean check = true;
+					for (Map<String, Object> map2 : resultList) {
+						if (map2.get("DATESTR").toString().equals(string) && map2.get("TYPE").toString().equals(type)) {
+							series_data_data.add(Double.valueOf(map2.get("MONEY").toString()));
+							check = false;
+							break;
+						}
+					}
+					if (check) {
+						series_data_data.add(Double.valueOf(0));
+					}
+				}
+				sdata.put("data", series_data_data);
+				series_data.add(sdata);
+			}
+			typelist.addAll(vo.getType());
+		} else {
+			if (vo.getType() != null && vo.getType().size() > 0) {
+				for (String type : vo.getType()) {
+					Map<String, Object> sdata = new HashMap<>();
+					sdata.put("type", "bar");
+					sdata.put("name", type);
+
+					List<Double> series_data_data = new ArrayList<>();
+					for (String string : xAxis_data) {
+						boolean check = true;
+						for (Map<String, Object> map2 : resultList) {
+							if (map2.get("DATESTR").toString().equals(string) && map2.get("CATEGORY").toString().equals(type)) {
+								series_data_data.add(Double.valueOf(map2.get("MONEY").toString()));
+								check = false;
+								break;
+							}
+						}
+						if (check) {
+							series_data_data.add(Double.valueOf(0));
+						}
+					}
+					sdata.put("data", series_data_data);
+					series_data.add(sdata);
+				}
+			} else if ((vo.getZhichu() != null && vo.getZhichu().size() > 0) || (vo.getShouru() != null && vo.getShouru().size() > 0)) {
+				// 分组
+				for (String type : typelist) {
+					Map<String, Object> sdata = new HashMap<>();
+					sdata.put("type", "bar");
+					sdata.put("name", type);
+
+					List<Double> series_data_data = new ArrayList<>();
+					for (String string : xAxis_data) {
+						boolean check = true;
+						for (Map<String, Object> map2 : resultList) {
+							if (map2.get("DATESTR").toString().equals(string) && map2.get("TYPE").toString().equals(type)) {
+								series_data_data.add(Double.valueOf(map2.get("MONEY").toString()));
+								check = false;
+								break;
+							}
+						}
+						if (check) {
+							series_data_data.add(Double.valueOf(0));
+						}
+					}
+					sdata.put("data", series_data_data);
+					series_data.add(sdata);
+				}
+			} else {
+
+				typelist.add("数量");
+				Map<String, Object> sdata = new HashMap<>();
+				sdata.put("type", "bar");
+				sdata.put("name", "数量");
+				List<Double> series_data_data = new ArrayList<>();
+				for (Map<String, Object> map2 : resultList) {
+					series_data_data.add(Double.valueOf(map2.get("MONEY").toString()));
+				}
+				sdata.put("data", series_data_data);
+				series_data.add(sdata);
+
+			}
+		}
+		
+		map.put("series_data", series_data);
+		map.put("xAxis_data", xAxis_data);
+		map.put("legend_data", typelist);
+
 		return map;
+	}
+
+	/**
+	 * @param resultList
+	 * @param xAxis_data
+	 */
+	private void groupX(List<Map<String, Object>> resultList, List<String> xAxis_data) {
+		for (Map<String, Object> map : resultList) {
+			if (xAxis_data == null) {
+				xAxis_data = new ArrayList<String>();
+			}
+			if (!xAxis_data.contains(map.get("DATESTR").toString())) {
+				xAxis_data.add(map.get("DATESTR").toString());
+			}
+		}
+		
+	}
+
+	/**
+	 * @return
+	 */
+	public List<Map<String, Object>> total() {
+		StringBuilder stringbuilder = new StringBuilder();
+		stringbuilder.append(" SELECT");
+		stringbuilder.append(" t.CATEGORY as name,");
+		stringbuilder.append(" sum( money)  as money");
+		stringbuilder.append(" FROM SYS_TURNOVER_INFO t");
+		stringbuilder.append(" group by t.CATEGORY ");
+		stringbuilder.append(" union");
+		stringbuilder.append(" select");
+		stringbuilder.append("  '历史' as name,");
+		stringbuilder.append(" sum( money)  as money");
+		stringbuilder.append(" from HISTROY_COUNT c");
+		return jdbcTemplate.queryForList(stringbuilder.toString());
 	}
 
 }

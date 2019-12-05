@@ -7,10 +7,10 @@
 .item_option label input[type="checkbox"] {
 	display: unset;
 }
-.item_option label{
+
+.item_option label {
 	font-weight: 550;
 }
-	
 </style>
 </head>
 <body id="body">
@@ -34,7 +34,7 @@
 			</div>
 			<div class="item_cont">
 				<ul class="item_option clearfix">
-					<li style="display: none;"><label ><input type="checkbox" name="zhichu" class="minimal-red" ><span>男</span></label></li>
+					<li style="display: none;"><label><input type="checkbox" name="zhichu" class="minimal-red"><span>男</span></label></li>
 				</ul>
 			</div>
 			<div class="item_more">
@@ -48,7 +48,7 @@
 			</div>
 			<div class="item_cont">
 				<ul class="item_option clearfix">
-					<li  style="display: none;"><label><input type="checkbox" name="shouru" class="minimal-red" ><span>男</span></label></li>
+					<li style="display: none;"><label><input type="checkbox" name="shouru" class="minimal-red"><span>男</span></label></li>
 				</ul>
 			</div>
 			<div class="item_more" style="display: none;">
@@ -56,21 +56,21 @@
 			</div>
 		</li>
 		<li class="item">
-			<div class="item_cont text-right">
-				<div class="">
-					<button type="button" class="btn btn-primary btn-sm" onclick="reloadData()">提交</button>
+			<div class="item_cont btn-group form-inline">
+				<div class="btn-tabs ">
+					<button type="button" class="btn btn-sm btn-info" data-type="YEAR">按年份</button>
+					<button type="button" class="btn btn-sm btn-info" data-type="MONTH">按月份</button>
+					<button type="button" class="btn btn-sm btn-info" data-type="DAY">按日期</button>
+					<button type="button" class="btn btn-primary btn-sm pull-right" onclick="reloadData()">提交</button>
 				</div>
+
 			</div>
 		</li>
 	</ul>
 
 	<div class="row">
-		<div class="item_cont form-inline col-xs-12 btn-group">
-			<button class="btn btn-sm btn-info" disabled="disabled" onClick="countType('YEAR')">按年份</button>
-			<button class="btn btn-sm btn-info"  onClick="countType('MONTH')">按月份</button>
-			<button class="btn btn-sm btn-info"  onClick="countType('DAY')">按日期</button>
-		</div>
-		<div id="count-chart" style="width: 100%;height: 350px;"></div>
+
+		<div id="count-chart" style="width: 100%; height: 350px;"></div>
 	</div>
 
 	<script type="text/javascript" src="/pages/turnover/count.js"></script>

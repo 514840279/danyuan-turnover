@@ -1,7 +1,25 @@
+var params={"zhichu":[],"shouru":[],"type":[]};
 $(function() {
 	loadParam();
+	
+	$(".btn-tabs").find("button").bind("click",function(){
+		var type = $(this).data("type");
+		if(type == null){
+			return;
+		}
+		$(".btn-tabs").find("button:disabled").removeClass("btn-warning");
+		$(".btn-tabs").find("button:disabled").addClass("btn-info");
+		$(".btn-tabs").find("button:disabled").removeProp("disabled");
+		$(this).prop("disabled",true);
+		$(this).removeClass("btn-info");
+		$(this).addClass("btn-warning");
+		params["dateType"]=type;
+		var url="/sysTurnoverInfo/chart";
+		ajaxPost(url,params,successLoadCharts);
+	});
+	$(".btn-tabs").find("button:first").click();
 });
-var params={"zhichu":[],"shouru":[],"type":[]};
+
 function loadParam(){
 	
 	$.each($("#tornover_type_search_box_List_li").find("ul li"),function(index,li){
@@ -80,12 +98,14 @@ function loadParam(){
 	};
 }
 
-
-function countType(type){
-	params["dateType"]=type;
+function reloadData(){
+	params["dateType"]=params["dateType"]==undefined?'YEAR':params["dateType"];
 	var url="/sysTurnoverInfo/chart";
 	ajaxPost(url,params,successLoadCharts);
-	function successLoadCharts(result){
-		
-	}
+}
+
+function successLoadCharts(result){
+	
+	setChart4("count-chart",result.data.title,result.data.legend_data,result.data.xAxis_data,result.data.series_data,"walden","main-content-box")
+	
 }

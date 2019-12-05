@@ -24,6 +24,7 @@ window.operateEvents = {
 					function refreshTableInfo(result){
 						if(result.code==200){
 							$("#histroy-table-id").bootstrapTable('refresh');
+							loadTotal();
 						}
 					};
 				}
@@ -86,6 +87,7 @@ $(function() {
 			if(result.code==200){
 				$("#histroy_modal").modal("hide");
 				$("#histroy-table-id").bootstrapTable('refresh');
+				loadTotal();
 			}
 		};
 		
