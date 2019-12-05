@@ -5,11 +5,66 @@
 <meta charset="UTF-8">
 </head>
 <body id="body">
-	<div class="text-center pull-center">
-		<button class="btn btn-sm btn-info">添加</button>
+	<div>
+		<div id="income_toolbar" class="btn-group" >
+			<button type="button" class="btn btn-default" id="addnew_income" style="display: none;">
+				<i class="glyphicon glyphicon-plus"></i> 新增
+			</button>
+			<input type="text" class="form-control pull-right" id="datepicker2" >
+		</div>
+
+		<table id="income-table-id"></table>
 	</div>
 
-	
+	<!-- 添加模态框 -->
+	<div class="modal fade" id="income_modal" tabindex="-1" role="dialog" aria-labelledby="my_income" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content" style="width: 99%">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="my_income">收入信息</h4>
+				</div>
+				<div class="modal-body">
+					<input type="text" style="display: none;" id="income_uuid" name="uuid" /> <input type="text" style="display: none;" id="income_deleteFlag" name="deleteFlag" /> <input type="text" style="display: none;" id="income_discription" name="discription" />
+					<div class=" row form-group">
+						<label class="col-sm-3 control-label text-right font16" style="height: 34px; padding-top: 5px;">分类:</label>
+						<div class="col-sm-9">
+							<!-- 							<input type="text" class="form-control" id="income_type" name="type" placeholder="type"/> -->
+							<select id="income_type"></select>
+						</div>
+					</div>
+					<div class=" row form-group">
+						<label class="col-sm-3 control-label text-right font16" style="height: 34px; padding-top: 5px;">名称:</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="income_name" name="name" placeholder="名称" />
+						</div>
+					</div>
+					<div class=" row form-group">
+						<label class="col-sm-3 control-label text-right font16" style="height: 34px; padding-top: 5px;">金额:</label>
+						<div class="col-sm-9">
+							<input type="number" class="form-control" id="income_money" name="money" placeholder="0.00"  />
+						</div>
+					</div>
+					<div class=" row form-group">
+						<label class="col-sm-3 control-label text-right font16" style="height: 34px; padding-top: 5px;">交易日期:</label>
+						<div class="col-sm-9">
+							<div class="input-group date">
+								<div class="input-group-addon">
+									<i class="fa fa-calendar"></i>
+								</div>
+								<input type="text" class="form-control pull-right" id="datepicker">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="income_save_button">提交</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script type="text/javascript" src="/pages/turnover/in.js"></script>
 </body>
 </html>

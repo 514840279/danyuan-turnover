@@ -3,13 +3,76 @@
 <head>
 <title></title>
 <meta charset="UTF-8">
+<style type="text/css">
+.item_option label input[type="checkbox"] {
+	display: unset;
+}
+.item_option label{
+	font-weight: 550;
+}
+	
+</style>
 </head>
 <body id="body">
-	<div class="text-center pull-center">
-		
+	<ul class="selectnav" id="show_change_search_box_List_ul">
+		<li class="item" id="tornover_type_search_box_List_li">
+			<div class="item_tit">方式</div>
+			<div class="item_button" style="display: none;">
+				<a class="btn btn-default fa fa-remove" style="display: none;"></a>
+			</div>
+			<div class="item_cont">
+				<ul class="item_option clearfix">
+					<li><label><input type="checkbox" name="gender" class="minimal"><span>支出</span></label></li>
+					<li><label><input type="checkbox" name="gender"><span>收入</span></label></li>
+				</ul>
+			</div>
+		</li>
+		<li class="item" id="zhichu_search_box_List_li">
+			<div class="item_tit">支出</div>
+			<div class="item_button" style="display: none;">
+				<a class="btn btn-default fa fa-remove" style="display: none;"></a>
+			</div>
+			<div class="item_cont">
+				<ul class="item_option clearfix">
+					<li style="display: none;"><label ><input type="checkbox" name="zhichu" class="minimal-red" ><span>男</span></label></li>
+				</ul>
+			</div>
+			<div class="item_more">
+				<a class="fa fa-angle-double-down">更多</a> <a class="fa fa-angle-double-up" style="display: none;">收起</a>
+			</div>
+		</li>
+		<li class="item" id="shouru_search_box_List_li">
+			<div class="item_tit">收入</div>
+			<div class="item_button" style="display: none;">
+				<a class="btn btn-default fa fa-remove" style="display: none;"></a>
+			</div>
+			<div class="item_cont">
+				<ul class="item_option clearfix">
+					<li  style="display: none;"><label><input type="checkbox" name="shouru" class="minimal-red" ><span>男</span></label></li>
+				</ul>
+			</div>
+			<div class="item_more" style="display: none;">
+				<a class="fa fa-angle-double-down">更多</a> <a class="fa fa-angle-double-up" style="display: none;">收起</a>
+			</div>
+		</li>
+		<li class="item">
+			<div class="item_cont text-right">
+				<div class="">
+					<button type="button" class="btn btn-primary btn-sm" onclick="reloadData()">提交</button>
+				</div>
+			</div>
+		</li>
+	</ul>
+
+	<div class="row">
+		<div class="item_cont form-inline col-xs-12 btn-group">
+			<button class="btn btn-sm btn-info" disabled="disabled" onClick="countType('YEAR')">按年份</button>
+			<button class="btn btn-sm btn-info"  onClick="countType('MONTH')">按月份</button>
+			<button class="btn btn-sm btn-info"  onClick="countType('DAY')">按日期</button>
+		</div>
+		<div id="count-chart" style="width: 100%;height: 350px;"></div>
 	</div>
 
-	
 	<script type="text/javascript" src="/pages/turnover/count.js"></script>
 </body>
 </html>

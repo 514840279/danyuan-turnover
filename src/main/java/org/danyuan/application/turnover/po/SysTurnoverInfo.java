@@ -1,9 +1,17 @@
 package org.danyuan.application.turnover.po;
 
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.danyuan.application.common.base.BaseEntity;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * @文件名 SysTurnoverInfo.java
@@ -16,11 +24,19 @@ import org.danyuan.application.common.base.BaseEntity;
 @Entity
 @Table(name = "sys_turnover_info")
 public class SysTurnoverInfo extends BaseEntity {
-	
-	private String	type;		// 收入，支出
-	private String	category;	// 分类，吃饭，借出，收入，。。。。
+	@Column(name = "type", columnDefinition = " varchar2(20)   COMMENT '交易类行'")
+	private String	type;		// 分类，吃饭，借出，收入，。。。。
+	@Column(name = "category", columnDefinition = " varchar2(20)   COMMENT '交易类别'")
+	private String	category;	// 收入，支出
+	@Column(name = "name", columnDefinition = " varchar2(50)   COMMENT '交易物品'")
 	private String	name;		// 详细
+	@Column(name = "money", columnDefinition = " double  default 0.00  COMMENT '交易金额'")
 	private Double	money;		// 金额
+	@Column(name = "turn_date", columnDefinition = " date  default CURRENT_DATE  COMMENT '交易日期'")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(style = "yyyy-MM-dd")
+	@JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd")
+	private Date	turnDate;	// 金额
 	
 	/**
 	 * @方法名 getType
@@ -89,5 +105,22 @@ public class SysTurnoverInfo extends BaseEntity {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
+
+	/**
+	 * @方法名 getTurnDate
+	 * @功能 返回变量 turnDate 的值
+	 * @return Date
+	 */
+	public Date getTurnDate() {
+		return turnDate;
+	}
+
+	/**
+	 * @方法名 setTurnDate
+	 * @功能 设置变量 turnDate 的值
+	 */
+	public void setTurnDate(Date turnDate) {
+		this.turnDate = turnDate;
+	}
+
 }

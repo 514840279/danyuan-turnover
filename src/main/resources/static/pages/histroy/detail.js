@@ -36,7 +36,7 @@ $(function() {
 	init();
 	
 	var url = "/sysDicName/findkeyList";
-	var param={code:"_form_type"};
+	var param={code:"金额来源"};
 	ajaxPost(url, param, formTypeSuccess);
 	function formTypeSuccess(result){
 		var data = [{id:'类型',text:'类型'}];
@@ -63,7 +63,8 @@ $(function() {
 		$("#histroy_discription").val("");
 		$("#histroy_name").val("");
 		$("#histroy_money").val("");
-		$("#histroy_type").val("");
+		$("#histroy_type").val("类型").trigger('change');
+		
 		$("#histroy_modal").modal("show");
 		
 	});
@@ -77,6 +78,8 @@ $(function() {
 			name:$("#histroy_name").val(),
 			money:$("#histroy_money").val(),
 			type:$("#histroy_type").val(),
+			createUser:username,
+			updateUser:username,
 		};
 		ajaxPost(url,param,successSave);
 		function successSave(result){
@@ -104,11 +107,10 @@ function init(){
 		pageSize : 10, // 每页的记录行数（*）
 		pageList : [ 10, 25, 50, 100 ], // 可供选择的每页的行数（*）
 //		strictSearch : true,
-		bordered:false,
-		striped:true,
-		sm:true,
+		classes: "table  table-striped table-sm ",
+//		classes: "table table-bordered table-striped table-sm table-dark",
 //		showColumns : true, // 是否显示所有的列
-//		showRefresh : true, // 是否显示刷新按钮
+		showRefresh : true, // 是否显示刷新按钮
 		minimumCountColumns : 2, // 最少允许的列数
 		clickToSelect : true, // 是否启用点击选中行
 //		height : 500, // 行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
@@ -138,18 +140,17 @@ function init(){
 			return param;
 		},
 		columns : [ 
-//			{title : '全选',	checkbox : true,align : 'center',valign : 'middle'}, 
 			{title : 'id',field : 'uuid',align : 'left',sortable : true,valign : 'middle',switchable:true,visible:false},
-			{title : '类型',	field : 'type','width':100,align : 'left',sortable : true,valign : 'middle',switchable:true,visible:true},
-			{title : '名称',	field : 'name','width':150,align : 'left',sortable : true,valign : 'middle',switchable:true,visible:true},
-			{title : '金额',	field : 'money','width':150,align : 'left',sortable : true,valign : 'middle',switchable:true,visible:true},
+			{title : '类型',	field : 'type','width':150,align : 'left',sortable : true,valign : 'middle',switchable:true,visible:true},
+			{title : '名称',	field : 'name','width':140,align : 'left',sortable : true,valign : 'middle',switchable:true,visible:true},
+			{title : '金额',	field : 'money','width':100,align : 'left',sortable : true,valign : 'middle',switchable:true,visible:true},
 			{title : '项目描述',	field : 'discription',align : 'left',sortable : true,	valign : 'middle',switchable:true,visible:false},
 			{title : '创建时间',	field : 'createTime',align : 'left',sortable : true,valign : 'middle',switchable:true,visible:false},
 			{title : '创建者',	field : 'createUser',align : 'left',sortable : true,valign : 'middle',switchable:true,visible:false},
 			{title : '更新时间',	field : 'updateTime',align : 'left',sortable : true,valign : 'middle',switchable:true,visible:false},
 			{title : '更新者',	field : 'updateTime',align : 'left',sortable : true,valign : 'middle',switchable:true,visible:false},
 			{title : '标记',		field : 'deleteFlag',align : 'left',sortable : true,valign : 'middle',switchable:true,visible:false},
-			{title : '操作',align : 'left','width':180,sortable : true,valign : 'middle',switchable:true,visible:true,events: operateEvents,formatter : function(value, row, index) {
+			{title : '操作',align : 'left','width':240,sortable : true,valign : 'middle',switchable:true,visible:true,events: operateEvents,formatter : function(value, row, index) {
 				var A = "<i  type='button' id='clickA'  class=' btn btn-info btn-sm fa fa-edit' title='编辑' ></i> ";
 				var D = "<i  type='button' id='clickD'  class=' btn btn-info btn-sm fa fa-remove' title='删除' ></i> ";
 				return A+D;
@@ -168,5 +169,7 @@ function init(){
 		}
 	}).on('dbl-click-row.bs.table', function (e, row, ele,field) { // 行双击事件 
 	}).on('click-row.bs.table', function (e, row, ele,field) { // 行单击事件
+		$(".info").removeClass("info");
+		$(ele).addClass("info");
 	});
 }

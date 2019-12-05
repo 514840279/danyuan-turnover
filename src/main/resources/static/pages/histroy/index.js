@@ -10,5 +10,5 @@ $(function() {
 	});
 	
 	
-	$("#row-btn").find("div.info-box:first").click();
+	$("#row-btn").find("div.info-box:last").click();
 });
