@@ -27,16 +27,16 @@ function successTotal(result){
 		var total = 0;
 		$.each(result.data,function(index,row){
 			if(row.NAME=="历史"){
-				$("#history-text").text(row['MONEY'].toFixed(2));
-				total +=row['MONEY'];
+				$("#history-text").text(row['MONEY']==null?0.00:row['MONEY'].toFixed(2));
+				total += row['MONEY']==null?0:row['MONEY'];
 			}
 			if(row['NAME']=="支出"){
-				$("#cost-text").text(row['MONEY'].toFixed(2));
-				total -= row['MONEY'];
+				$("#cost-text").text(row['MONEY']==null?0.00:row['MONEY'].toFixed(2));
+				total -= row['MONEY']==null?0:row['MONEY'];
 			}
 			if(row['NAME']=="收入"){
-				$("#income-text").text(row['MONEY'].toFixed(2));
-				total +=row['MONEY'];
+				$("#income-text").text(row['MONEY']==null?0.00:row['MONEY'].toFixed(2));
+				total += row['MONEY']==null?0:row['MONEY'];
 			}
 			
 		});
