@@ -59,10 +59,11 @@ $(function() {
 		todayBtn : "linked",
 		todayHighlight : true,
 		weekStart : 0,
-	}).on("changeDate", function(e) {
-		$("#income-table-id").bootstrapTable('refresh');
 	});
 	$("#datepicker2").datepicker('setDate',new Date());
+	$("#datepicker2").datepicker().on("changeDate", function(e) {
+		$("#income-table-id").bootstrapTable('refresh');
+	});
 	
 	
 	var url = "/sysDicName/findkeyList";
