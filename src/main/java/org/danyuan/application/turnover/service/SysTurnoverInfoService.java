@@ -37,13 +37,13 @@ import org.springframework.stereotype.Service;
  */
 @Service("sysTurnoverInfoService")
 public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> implements BaseService<SysTurnoverInfo> {
-	
+
 	@Autowired
 	SysTurnoverInfoDao	sysTurnoverInfoDao;
-	
+
 	@Autowired
 	JdbcTemplate		jdbcTemplate;
-	
+
 	/**
 	 * @方法名 pageCost
 	 * @功能 TODO(这里用一句话描述这个方法的作用)
@@ -59,7 +59,7 @@ public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> imp
 		PageRequest request = PageRequest.of(vo.getPageNumber() - 1, vo.getPageSize(), sort);
 		return sysTurnoverInfoDao.findAll(new Specification<SysTurnoverInfo>() {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
 			public Predicate toPredicate(Root<SysTurnoverInfo> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
 				List<Predicate> list = new ArrayList<>();
@@ -71,10 +71,10 @@ public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> imp
 				}
 				return criteriaBuilder.and(list.toArray(new Predicate[list.size()]));
 			}
-			
+
 		}, request);
 	}
-
+	
 	/**
 	 * @方法名 chart
 	 * @功能 TODO(这里用一句话描述这个方法的作用)
@@ -101,7 +101,7 @@ public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> imp
 				columnStringBuilderBuilder.append(" TURN_DATE as datestr");
 				break;
 		}
-
+		
 		Map<String, Object> params = new HashMap<>();
 		StringBuilder stringBuilder1 = new StringBuilder();
 		if (vo.getType() != null && vo.getType().size() > 0) {
@@ -116,9 +116,9 @@ public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> imp
 			stringBuilder1.append(" group by ");
 			stringBuilder1.append(groupStringBuilderBuilder);
 			stringBuilder1.append(",CATEGORY");
-
+			
 		}
-		
+
 		StringBuilder stringBuilder2 = new StringBuilder();
 		List<String> typelist = new ArrayList<String>();
 		if ((vo.getZhichu() != null && vo.getZhichu().size() > 0) || (vo.getShouru() != null && vo.getShouru().size() > 0)) {
@@ -140,7 +140,7 @@ public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> imp
 			stringBuilder2.append(groupStringBuilderBuilder);
 			stringBuilder2.append(",TYPE ");
 		}
-		
+
 		StringBuilder stringBuilder = new StringBuilder();
 		if ((vo.getType() != null && vo.getType().size() > 0) && ((vo.getZhichu() != null && vo.getZhichu().size() > 0) || (vo.getShouru() != null && vo.getShouru().size() > 0))) {
 			stringBuilder.append(stringBuilder1.toString());
@@ -161,24 +161,24 @@ public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> imp
 		stringBuilder.append(" order by datestr");
 		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(jdbcTemplate);
 		List<Map<String, Object>> resultList = template.queryForList(stringBuilder.toString(), params);
-
-		Map<String, Object> map = new HashMap<>();
 		
+		Map<String, Object> map = new HashMap<>();
+
 		List<String> xAxis_data = new ArrayList<>();
 		groupX(resultList, xAxis_data);
-		
+
 		if (vo.getType() != null && vo.getType().size() > 0) {
 			typelist.addAll(vo.getType());
 		}
 		List<Map<String, Object>> series_data = new ArrayList<>();
-		
-		if (((vo.getZhichu() != null && vo.getZhichu().size() > 0) || (vo.getShouru() != null && vo.getShouru().size() > 0)) && (vo.getType() != null && vo.getType().size() > 0)) {
+
+		if (((vo.getZhichu() != null && vo.getZhichu().size() > 0) || (vo.getShouru() != null && vo.getShouru().size() > 0)) || (vo.getType() != null && vo.getType().size() > 0)) {
 			// 分组
 			for (String type : typelist) {
 				Map<String, Object> sdata = new HashMap<>();
 				sdata.put("type", "bar");
 				sdata.put("name", type);
-				
+
 				List<Double> series_data_data = new ArrayList<>();
 				for (String string : xAxis_data) {
 					BigDecimal money = new BigDecimal(0);
@@ -200,7 +200,7 @@ public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> imp
 				series_data.add(sdata);
 			}
 		} else {
-
+			
 			typelist.add("数量");
 			Map<String, Object> sdata = new HashMap<>();
 			sdata.put("type", "bar");
@@ -211,16 +211,16 @@ public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> imp
 			}
 			sdata.put("data", series_data_data);
 			series_data.add(sdata);
-
+			
 		}
-
+		
 		map.put("series_data", series_data);
 		map.put("xAxis_data", xAxis_data);
 		map.put("legend_data", typelist);
-		
+
 		return map;
 	}
-	
+
 	/**
 	 * @param resultList
 	 * @param xAxis_data
@@ -234,9 +234,9 @@ public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> imp
 				xAxis_data.add(map.get("DATESTR").toString());
 			}
 		}
-
+		
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -254,5 +254,5 @@ public class SysTurnoverInfoService extends BaseServiceImpl<SysTurnoverInfo> imp
 		stringbuilder.append(" from HISTROY_COUNT c");
 		return jdbcTemplate.queryForList(stringbuilder.toString());
 	}
-	
+
 }
